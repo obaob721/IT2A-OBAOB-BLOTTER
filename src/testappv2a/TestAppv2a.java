@@ -12,25 +12,26 @@ public class TestAppv2a {
         config conf = new config();
         
         System.out.print("First Name: ");
-        String f_name = sc.next();
+        String c_fname = sc.next();
         System.out.print("Last Name: ");
-        String l_name = sc.next();
+        String c_lname = sc.next();
         System.out.print("Age: ");
-        String age = sc.next();
+        String c_age = sc.next();
         System.out.print("Address: ");
-        String b_address = sc.next();
+        String c_address = sc.next();
+        System.out.print("Civil Status: ");
+        String c_civilstatus = sc.next();
+     
+        String sql = "INSERT INTO citizen(c_fname, c_lname, c_age, c_address, c_civilstatus) VALUES (?, ?, ?, ?, ?)";
 
-        String sql = "INSERT INTO citizen(f_name, l_name, age, b_address) VALUES (?, ?, ?, ?)";
-
-
-        conf.addRecord(sql, f_name, l_name, age, b_address);
+        conf.addRecord(sql, c_fname, c_lname, c_age, c_address, c_civilstatus);
      }
         
        public void viewCitizen() {
           
         String  db = "SELECT * FROM citizen";
-        String[]  cap = {"Entry No.", "First Name", "Last Name", "Age", "Address"};
-        String[] small = {"Entry_Number", "f_name", "l_name", "age", "b_address"};
+        String[]  cap = {"CITIZEN ID", "FIRST NAME", "LAST NAME", "AGE", "ADDRESS", "CIVIL STATUS"};
+        String[] small = {"c_id", "c_fname", "c_lname", "c_age", "c_address", "c_civilstatus"};
 
         config conf = new config();
         conf.viewRecords(db, cap, small);
@@ -39,32 +40,34 @@ public class TestAppv2a {
     private void updateCitizen(){
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Enter entry num to update: ");
+        System.out.print("Enter Citizen ID to update: ");
         int id = sc.nextInt();
         
         System.out.print("Enter new age: ");
         int ge = sc.nextInt();
         System.out.print("Enter new address: ");
         String adrs = sc.next();
+        System.out.print("Enter new civil status: ");
+        String cvs = sc.next();
         
-        String qry = "UPDATE citizen SET age = ? , b_address = ? Where Entry_Number = ?";
+        String qry = "UPDATE citizen SET c_age = ? , c_address = ? , c_civilstatus = ? Where c_id = ?";
         
         config conf = new config();
-        conf.updateRecord(qry, ge, adrs, id);      
+        conf.updateRecord(qry, ge, adrs,cvs, id);      
     }
 
    private void deleteCitizen(){
             Scanner sc = new Scanner(System.in);
          
-        System.out.print("Enter Entry Num to delete: ");
+        System.out.print("Enter Citizen ID to delete: ");
         int id = sc.nextInt();
         
-        String qry = "Delete FROM citizen WHERE Entry_Number = ?";
+        String qry = "Delete FROM citizen WHERE c_id = ?";
         
         config conf = new config();
         conf.deleteRecord(qry, id);    
    }
-    public static void main(String[] args) {
+    public void main(String[] args) {
        
         TestAppv2a test= new TestAppv2a();
         Scanner sc = new Scanner(System.in);
@@ -88,6 +91,7 @@ public class TestAppv2a {
             case 2:
                 test.viewCitizen();
                 test.updateCitizen();
+                test.viewCitizen();
                 break;
             case 3:
                 test.viewCitizen();
