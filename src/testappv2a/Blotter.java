@@ -9,13 +9,15 @@ public class Blotter {
         Scanner sc = new Scanner(System.in);
         config conf = new config();
         
+        sc.nextLine();
+
         System.out.print("Complainant's FullName: ");
         String b_fname = sc.nextLine();
         System.out.print("Suspect Name: ");
         String b_sus = sc.nextLine();
         System.out.print("Incident Type: ");
         String b_incident = sc.next();
-        System.out.print("Date Reported: ");
+        System.out.print("Date & Time Reported: ");
         String b_reported = sc.next();
         System.out.print("Location: ");
         String b_location = sc.next();
@@ -28,7 +30,7 @@ public class Blotter {
        public void viewBlotter() {
           
         String  db = "SELECT * FROM blotter";
-        String[]  cap = {"BLOTTER ID", "COMPLAINANT'S NAME", "SUSPECT NAME", "INCIDENT TYPE", "DATE REPORTED", "LOCATION"};
+        String[]  cap = {"BLOTTER ID", "COMPLAINANT'S NAME", "SUSPECT NAME", "INCIDENT TYPE", "DATE & TIME REPORTED", "LOCATION"};
         String[] small = {"b_id", "b_fname", "b_sus", "b_incident", "b_reported", "b_location"};
 
         config conf = new config();
@@ -41,14 +43,17 @@ public class Blotter {
         System.out.print("Enter Blotter ID to update: ");
         int id = sc.nextInt();
         
-         System.out.print("Enter new Complainant's FullName: ");
+        sc.nextLine();
+        
+        System.out.print("Enter new Complainant's FullName: ");
         String b_fname = sc.nextLine();
         System.out.print("Enter new Suspect Name: ");
         String b_sus = sc.nextLine();
         System.out.print("Enter new Incident Type: ");
         String b_incident = sc.next();
-        System.out.print("Enter new Date Reported: ");
+        System.out.print("Enter new Date & Time Reported: ");
         String b_reported = sc.next();
+        sc.nextLine();
         System.out.print("Enter new Location: ");
         String b_location = sc.next();
         
@@ -74,7 +79,7 @@ public class Blotter {
         Blotter test= new Blotter();
         Scanner sc = new Scanner(System.in);
        
-        String resp;
+       
      do{   
          
         System.out.println("1. ADD");
@@ -103,12 +108,12 @@ public class Blotter {
             case 4:
                 test.viewBlotter();
                 break;
+            case 5:
+                return;
         }
-         System.out.print("Do you want to continue?: ");
-         resp = sc.next();
          
-     }while (resp.equalsIgnoreCase("yes"));
-        System.out.println("Thank you!");
+     }while (true);
+        
     }
     
 }

@@ -19,19 +19,19 @@ public class TestAppv2a {
         String c_age = sc.next();
         System.out.print("Address: ");
         String c_address = sc.next();
-        System.out.print("Civil Status: ");
-        String c_civilstatus = sc.next();
+        System.out.print("Phone Number: ");
+        String c_pnumber = sc.next();
      
-        String sql = "INSERT INTO citizen(c_fname, c_lname, c_age, c_address, c_civilstatus) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO citizen(c_fname, c_lname, c_age, c_address, c_pnumber) VALUES (?, ?, ?, ?, ?)";
 
-        conf.addRecord(sql, c_fname, c_lname, c_age, c_address, c_civilstatus);
+        conf.addRecord(sql, c_fname, c_lname, c_age, c_address, c_pnumber);
      }
         
        public void viewCitizen() {
           
         String  db = "SELECT * FROM citizen";
-        String[]  cap = {"CITIZEN ID", "FIRST NAME", "LAST NAME", "AGE", "ADDRESS", "CIVIL STATUS"};
-        String[] small = {"c_id", "c_fname", "c_lname", "c_age", "c_address", "c_civilstatus"};
+        String[]  cap = {"CITIZEN ID", "FIRST NAME", "LAST NAME", "AGE", "ADDRESS", "PHONE NUMBER"};
+        String[] small = {"c_id", "c_fname", "c_lname", "c_age", "c_address", "c_pnumber"};
 
         config conf = new config();
         conf.viewRecords(db, cap, small);
@@ -47,13 +47,13 @@ public class TestAppv2a {
         int ge = sc.nextInt();
         System.out.print("Enter new address: ");
         String adrs = sc.next();
-        System.out.print("Enter new civil status: ");
-        String cvs = sc.next();
+        System.out.print("Enter new phone number: ");
+        String pnum = sc.next();
         
-        String qry = "UPDATE citizen SET c_age = ? , c_address = ? , c_civilstatus = ? Where c_id = ?";
+        String qry = "UPDATE citizen SET c_age = ? , c_address = ? , c_pnumber = ? Where c_id = ?";
         
         config conf = new config();
-        conf.updateRecord(qry, ge, adrs,cvs, id);      
+        conf.updateRecord(qry, ge, adrs,pnum, id);      
     }
 
    private void deleteCitizen(){
@@ -72,7 +72,7 @@ public class TestAppv2a {
         TestAppv2a test= new TestAppv2a();
         Scanner sc = new Scanner(System.in);
        
-        String resp;
+       
      do{   
          
         System.out.println("1. ADD");
@@ -101,12 +101,13 @@ public class TestAppv2a {
             case 4:
                 test.viewCitizen();
                 break;
+            case 5:
+                return;
         }
-         System.out.print("Do you want to continue?: ");
-         resp = sc.next();
          
-     }while (resp.equalsIgnoreCase("yes"));
-        System.out.println("Thank you!");
+         
+     }while (true);
+        
     }
     
 }
