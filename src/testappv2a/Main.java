@@ -6,7 +6,7 @@ public class Main {
     
       public static void main(String[] args) {
        Scanner scanner = new Scanner(System.in);
-       String resp;
+       boolean exit = true;
        
        do{
            
@@ -33,18 +33,15 @@ public class Main {
                 rcrds.main(args);
                 break;
             case 4:
-                System.out.println("Thank for using my system");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Invalid choice");
+                System.out.print("Exit Selected... type 'yes' to continue: ");
+                String resp = scanner.next();
+                if(resp.equalsIgnoreCase("yes")){
+                    exit = false;
+                }
                 break;
         }
-        System.out.print("Do you want to continue?: ");
-         resp = scanner.next();
-
-       }while(resp.equalsIgnoreCase("yes"));
-        System.out.println("Thank you!");
+ 
+       }while(exit);
     }
         
  }

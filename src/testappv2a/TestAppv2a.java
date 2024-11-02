@@ -5,6 +5,50 @@ import java.util.Scanner;
 
 
 public class TestAppv2a {
+     public void main(String[] args) {
+       
+        TestAppv2a test= new TestAppv2a();
+        Scanner sc = new Scanner(System.in);
+        String resp;
+       
+     do{   
+        System.out.println("--------------------------------");
+        System.out.println("1. ADD CITIZEN");
+        System.out.println("2. UPDATE CITIZEN");
+        System.out.println("3. DELETE CITIZEN");
+        System.out.println("4. VIEW CITIZEN");
+        System.out.println("5. EXIT");
+
+        System.out.print("Enter Action: ");
+        int action = sc.nextInt();
+        
+        switch(action){
+            case 1:
+                test.addCitizen();
+                break;
+            case 2:
+                test.viewCitizen();
+                test.updateCitizen();
+                test.viewCitizen();
+                break;
+            case 3:
+                test.viewCitizen();
+                test.deleteCitizen();
+                test.viewCitizen();
+               break;
+            case 4:
+                test.viewCitizen();
+                break;
+            case 5:
+                
+               break;
+        }
+         System.out.print("Do you want to continue?: ");
+         resp = sc.next();
+         
+     }while(resp.equalsIgnoreCase("yes"));
+        
+    }
 
         public void addCitizen(){
             
@@ -39,9 +83,16 @@ public class TestAppv2a {
     
     private void updateCitizen(){
         Scanner sc = new Scanner(System.in);
-
+        config conf = new config();
+        
         System.out.print("Enter Citizen ID to update: ");
         int id = sc.nextInt();
+        
+        while(conf.getSingleValue("Select c_id FROM citizen WHERE c_id = ?",id)==0){
+            System.out.println("ID doesn't exist!");
+            System.out.print("Select Citizen ID Again: ");
+            id = sc.nextInt();
+        }
         
         System.out.print("Enter new age: ");
         int ge = sc.nextInt();
@@ -51,63 +102,26 @@ public class TestAppv2a {
         String pnum = sc.next();
         
         String qry = "UPDATE citizen SET c_age = ? , c_address = ? , c_pnumber = ? Where c_id = ?";
-        
-        config conf = new config();
+     
         conf.updateRecord(qry, ge, adrs,pnum, id);      
     }
 
    private void deleteCitizen(){
-            Scanner sc = new Scanner(System.in);
-         
+        Scanner sc = new Scanner(System.in);
+        config conf = new config();
+        
         System.out.print("Enter Citizen ID to delete: ");
         int id = sc.nextInt();
         
-        String qry = "Delete FROM citizen WHERE c_id = ?";
+         while(conf.getSingleValue("Select c_id FROM citizen WHERE c_id = ?",id)==0){
+            System.out.println("ID doesn't exist!");
+            System.out.print("Select Citizen ID Again: ");
+            id = sc.nextInt();
+        }
         
-        config conf = new config();
+        String qry = "Delete FROM citizen WHERE c_id = ?";
+       
         conf.deleteRecord(qry, id);    
    }
-    public void main(String[] args) {
-       
-        TestAppv2a test= new TestAppv2a();
-        Scanner sc = new Scanner(System.in);
-       
-       
-     do{   
-         
-        System.out.println("1. ADD");
-        System.out.println("2. UPDATE");
-        System.out.println("3. DELETE");
-        System.out.println("4. VIEW");
-        System.out.println("5. EXIT");
-
-        System.out.print("Enter Actions: ");
-        int action = sc.nextInt();
-        
-        switch(action){
-            case 1:
-                test.addCitizen();
-                break;
-            case 2:
-                test.viewCitizen();
-                test.updateCitizen();
-                test.viewCitizen();
-                break;
-            case 3:
-                test.viewCitizen();
-                test.deleteCitizen();
-                test.viewCitizen();
-               break;
-            case 4:
-                test.viewCitizen();
-                break;
-            case 5:
-                return;
-        }
-         
-         
-     }while (true);
-        
-    }
-    
+   
 }
