@@ -164,13 +164,11 @@ private void RecordByID() {
     System.out.print("Enter Citizen ID to search: ");
     int id = sc.nextInt();
     
-    // Loop to ensure the entered ID exists in the database
     while (conf.getSingleValue("SELECT c_id FROM citizen WHERE c_id = ?", id) == 0) {
         System.out.print("ID doesn't exist, please enter again: ");
         id = sc.nextInt();
     }
     
-    // Corrected query with added commas
     String query = "SELECT record.r_id, blotter.b_reported, blotter.b_fname, citizen.c_lname, "
                  + "blotter.b_incident, blotter.b_location, record.r_datesettled, record.r_status "
                  + "FROM record "
@@ -178,13 +176,11 @@ private void RecordByID() {
                  + "JOIN blotter ON record.b_id = blotter.b_id "
                  + "WHERE record.r_id = " + id;
     
-    // Table headers and columns
     String[] headers = {"RECORD ID", "DATE REPORTED", "COMPLAINANT", "CITIZEN LAST NAME", 
                         "INCIDENT", "LOCATION", "DATE SETTLED", "STATUS"};
     String[] columns = {"r_id", "b_reported", "b_fname", "c_lname", 
                         "b_incident", "b_location", "r_datesettled", "r_status"};
 
-    // View records based on the query, headers, and columns
     conf.viewRecords(query, headers, columns);
 }
 
