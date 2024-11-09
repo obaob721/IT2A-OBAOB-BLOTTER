@@ -87,6 +87,8 @@ public class config {
             System.out.println("Error retrieving records: " + e.getMessage());
         }
     }
+   
+
      public void updateRecord(String sql, Object... values) {
         try (Connection conn = this.connectDB(); 
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -180,4 +182,21 @@ public class config {
            return result;  
              
      }
+     public String getSingleString(String query, int id) {
+    String result = "";
+    try (Connection conn = this.connectDB();
+         PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            result = rs.getString(1);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error retrieving string value: " + e.getMessage());
+    }
+    return result;
+}
+
 }

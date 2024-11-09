@@ -58,8 +58,7 @@ public class Blotter {
 
         System.out.print("Complainant's FullName: ");
         String b_fname = sc.nextLine();
-        System.out.print("Suspect Name: ");
-        String b_sus = sc.nextLine();
+        
         System.out.print("Incident Type: ");
         String b_incident = sc.next();
         
@@ -69,17 +68,20 @@ public class Blotter {
         
         System.out.print("Location: ");
         String b_location = sc.next();
+        
+        String b_status = "ongoing"; 
      
-        String sql = "INSERT INTO blotter(b_fname, b_sus, b_incident, b_reported, b_location) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO blotter(b_fname, b_incident, b_reported, b_location, b_status) VALUES (?, ?, ?, ?, ?)";
 
-        conf.addRecord(sql, b_fname, b_sus, b_incident, date, b_location);
+        conf.addRecord(sql, b_fname, b_incident, date, b_location, b_status);
      }
         
        public void viewBlotter() {
           
-        String  db = "SELECT * FROM blotter";
-        String[]  cap = {"BLOTTER ID", "COMPLAINANT'S NAME", "SUSPECT NAME", "INCIDENT TYPE", "DATE REPORTED", "LOCATION"};
-        String[] small = {"b_id", "b_fname", "b_sus", "b_incident", "b_reported", "b_location"};
+        String  db = "SELECT * FROM blotter ";
+        
+        String[]  cap = {"BLOTTER ID", "COMPLAINANT'S NAME", "INCIDENT TYPE", "DATE REPORTED", "LOCATION","STATUS"};
+        String[] small = {"b_id", "b_fname", "b_incident", "b_reported", "b_location", "b_status"};
 
         config conf = new config();
         conf.viewRecords(db, cap, small);
@@ -101,8 +103,7 @@ public class Blotter {
         
         System.out.print("Enter new Complainant's FullName: ");
         String b_fname = sc.nextLine();
-        System.out.print("Enter new Suspect Name: ");
-        String b_sus = sc.nextLine();
+  
         System.out.print("Enter new Incident Type: ");
         String b_incident = sc.next();
         
@@ -113,9 +114,9 @@ public class Blotter {
         System.out.print("Enter new Location: ");
         String b_location = sc.next();
         
-        String qry = "UPDATE blotter SET b_fname = ? , b_sus = ? , b_incident = ? , b_reported = ?, b_location = ? Where b_id = ?";
+        String qry = "UPDATE blotter SET b_fname = ?, b_incident = ? , b_reported = ?, b_location = ?, b_status = 'ongoing' Where b_id = ?";
      
-        conf.updateRecord(qry, b_fname, b_sus,b_incident,date,b_location, id);      
+        conf.updateRecord(qry, b_fname,b_incident,date,b_location, id);      
     }
 
    private void deleteBlotter(){
