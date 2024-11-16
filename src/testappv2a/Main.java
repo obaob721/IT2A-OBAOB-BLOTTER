@@ -18,7 +18,10 @@ public class Main {
         
         System.out.print("Enter Choosen Entity: ");
         int choice = scanner.nextInt();
-        
+        while (choice <= 0) {
+        System.out.print("Must be positive between 1-4. Enter again: ");
+        choice = scanner.nextInt();
+    }
         switch (choice) {
             case 1:
                 TestAppv2a test = new TestAppv2a(); 
@@ -39,7 +42,10 @@ public class Main {
                     exit = false;
                 }
                 break;
-        }
+            default:
+                System.out.println("Invalid choice.");
+                break;
+        }   
  
        }while(exit);
     }

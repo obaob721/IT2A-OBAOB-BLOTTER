@@ -55,37 +55,51 @@ public class config {
         }
     }
    public void viewRecords(String sqlQuery, String[] columnHeaders, String[] columnNames) {
+
         if (columnHeaders.length != columnNames.length) {
             System.out.println("Error: Mismatch between column headers and column names.");
             return;
         }
 
+        int columnWidth = 20; 
+        int totalWidth = (columnWidth + 3) * columnHeaders.length + 1;
+
+        StringBuilder lineSeparatorBuilder = new StringBuilder();
+
+        for (int i = 0; i < totalWidth; i++) {
+            lineSeparatorBuilder.append("-");
+        }
+
+        String lineSeparator = lineSeparatorBuilder.toString();
+
+        System.out.println(lineSeparator);
+
+        StringBuilder headerRow = new StringBuilder("| ");
+        for (String header : columnHeaders) {
+            headerRow.append(String.format("%-" + columnWidth + "s | ", header));
+        }
+        System.out.println(headerRow);
+        System.out.println(lineSeparator);
+
         try (Connection conn = this.connectDB();
              PreparedStatement pstmt = conn.prepareStatement(sqlQuery);
              ResultSet rs = pstmt.executeQuery()) {
-
-            StringBuilder headerLine = new StringBuilder();
-            headerLine.append("-------------------------------------------------------------------------------------------------------------------------------------------\n| ");
-            for (String header : columnHeaders) {
-                headerLine.append(String.format("%-20s | ", header)); 
-            }
-            headerLine.append("\n-------------------------------------------------------------------------------------------------------------------------------------------");
-
-            System.out.println(headerLine.toString());
 
             while (rs.next()) {
                 StringBuilder row = new StringBuilder("| ");
                 for (String colName : columnNames) {
                     String value = rs.getString(colName);
-                    row.append(String.format("%-20s | ", value != null ? value : "")); 
+                    row.append(String.format("%-" + columnWidth + "s | ", value != null ? value : ""));
                 }
-                System.out.println(row.toString());
+                System.out.println(row);
             }
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------");
+
+            System.out.println(lineSeparator);
 
         } catch (SQLException e) {
             System.out.println("Error retrieving records: " + e.getMessage());
         }
+        
     }
    
 

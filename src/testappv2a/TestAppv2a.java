@@ -60,7 +60,11 @@ public class TestAppv2a {
         System.out.print("Last Name: ");
         String c_lname = sc.next();
         System.out.print("Age: ");
-        String c_age = sc.next();
+        int c_age = sc.nextInt();
+        while (c_age <= 0) {
+        System.out.print("Must be positive. Enter again: ");
+        c_age = sc.nextInt();
+    }
         System.out.print("Address: ");
         String c_address = sc.next();
         System.out.print("Phone Number: ");
@@ -96,6 +100,10 @@ public class TestAppv2a {
         
         System.out.print("Enter new age: ");
         int ge = sc.nextInt();
+        while (ge <= 0) {
+        System.out.print("Must be positive. Enter again: ");
+        ge = sc.nextInt();
+    }
         System.out.print("Enter new address: ");
         String adrs = sc.next();
         System.out.print("Enter new phone number: ");

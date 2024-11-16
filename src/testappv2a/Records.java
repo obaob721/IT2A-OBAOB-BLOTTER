@@ -88,6 +88,10 @@ public class Records {
         
         System.out.print("Number of Offense: ");
         int r_offense = sc.nextInt();
+        while (r_offense <= 0) {
+        System.out.print("Must be positive. Enter again: ");
+        r_offense = sc.nextInt();
+    }
         
         String r_status = "cleared";
         
@@ -116,13 +120,20 @@ public class Records {
         
         sc.nextLine(); 
         System.out.print("Enter new Num of Offense: ");
-        String r_offense = sc.nextLine();
-        
+        int r_offense = sc.nextInt();
+        while (r_offense <= 0) {
+        System.out.print("Must be positive. Enter again: ");
+        r_offense = sc.nextInt();
+    }
         String r_status = "cleared";
         
-        String query = "UPDATE record SET r_offense = ?, r_status = ? WHERE r_id = ?";
+        LocalDate currdate = LocalDate.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        String date = currdate.format(format);
         
-        conf.updateRecord(query, r_offense,r_status,id);
+        String query = "UPDATE record SET r_offense = ?, r_status = ?, r_datesettled = ? WHERE r_id = ?";
+        
+        conf.updateRecord(query, r_offense,r_status, date,id);
         
     }
 private void deleteRecord(){
