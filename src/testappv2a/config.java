@@ -178,39 +178,22 @@ public class config {
                 }
             }
      }
-     public double getSingleValue(String sql, Object... params){
-         double result = 0.0;
-         
-          try (Connection conn = connectDB();
-             PreparedStatement pstmt = conn.prepareStatement(sql)){
-              
-              setPreparedStatementValues(pstmt, params);
-             ResultSet rs = pstmt.executeQuery();
-             if(rs.next()){
-                 result = rs.getDouble(1);
-             }
-         
-          }catch(SQLException e){
-              System.out.println("Error retrieving single value: "+e.getMessage());
-          }
-           return result;  
-             
-     }
-     public String getSingleString(String query, int id) {
-    String result = "";
-    try (Connection conn = this.connectDB();
-         PreparedStatement pstmt = conn.prepareStatement(query)) {
+     
+     public double getSingleValue(String sql, Object... params) {
+        double result = 0.0;
+        try (Connection conn = connectDB();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-        pstmt.setInt(1, id);
-        ResultSet rs = pstmt.executeQuery();
+            setPreparedStatementValues(pstmt, params);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = rs.getDouble(1);
+            }
 
-        if (rs.next()) {
-            result = rs.getString(1);
+        } catch (SQLException e) {
+            System.out.println("Error retrieving single value: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error retrieving string value: " + e.getMessage());
+        return result;
     }
-    return result;
-}
 
 }

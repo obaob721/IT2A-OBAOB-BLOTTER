@@ -1,4 +1,3 @@
-
 package testappv2a;
 
 import java.time.LocalDate;
@@ -6,10 +5,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Records {
+    
     public void main(String[] args) {
         
         Records r = new Records();
-        Scanner input = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         String resp;
         
         do{    
@@ -21,8 +21,25 @@ public class Records {
             System.out.println("5. SEARCH CITIZEN RECORD");
             System.out.println("6. VIEW RECORD BY ID");
             System.out.println("7. EXIT");
-            System.out.print("Enter Action: ");
-            int action = input.nextInt();
+            
+        int action = 1;
+        
+        while (true) {
+                System.out.print("Enter Action: ");
+                
+                if (sc.hasNextInt()) {
+                    action = sc.nextInt();
+                    
+                    if (action >= 1 && action <= 7) {
+                        break;
+                    } else {
+                        System.out.println("Invalid Action. Enter number (1-7) only.");
+                    }
+                } else {
+                    System.out.println("Invalid Input. Must be an Integer.");
+                    sc.next();
+                }
+            }
 
             switch(action){
                 case 1:
@@ -47,13 +64,21 @@ public class Records {
                     r.viewRecordById();
                break;
                 case 7: 
-                    
-                break;
+                return;    
         }
-         System.out.print("Do you want to continue?: ");
-         resp = input.next();
-         
-     }while(resp.equalsIgnoreCase("yes"));
+            
+         System.out.print("Do you want to continue? (yes/no): ");
+            resp = sc.next();
+            
+            while (!resp.equalsIgnoreCase("yes") && !resp.equalsIgnoreCase("no")) {
+                System.out.print("Invalid Input, Enter Again: ");
+                resp = sc.next();
+            }
+            
+        }while(resp.equalsIgnoreCase("yes"));
+        
+        System.out.println("Thank you for using my system!");
+        System.exit(0);     
      
     }
         
@@ -66,32 +91,65 @@ public class Records {
         test.viewCitizen();
         
         System.out.print("Enter Citizen ID: ");
-        int c_id = sc.nextInt();
+        int c_id;
         
-        String csql = "Select c_id FROM citizen WHERE c_id = ?";
-        while(conf.getSingleValue(csql, c_id)== 0){
-            System.out.print("Citizen doesn't exist, Select Again: ");
-            c_id = sc.nextInt();
+        while (true) {
+
+            if (sc.hasNextInt()) {
+                c_id = sc.nextInt();
+
+                if (conf.getSingleValue("SELECT c_id FROM citizen WHERE c_id = ?", c_id) != 0) {
+                    break;
+                } else {
+                    System.out.print("ID doesn't exist, Select Again: ");
+                }
+            } else {
+
+                System.out.print("Invalid Input, Enter Again: ");
+                sc.next();
+            }
         }
         
         Blotter bltt = new Blotter(); 
         bltt.viewBlotter();
         
         System.out.print("Enter Blotter ID: ");
-        int b_id = sc.nextInt();
+        int b_id;
         
-        String bsql = "Select b_id FROM blotter WHERE b_id = ?";
-        while(conf.getSingleValue(bsql, b_id)== 0){
-            System.out.print("Blotter doesn't exist, Select Again: ");
-            b_id = sc.nextInt();
+        while (true) {
+
+            if (sc.hasNextInt()) {
+                b_id = sc.nextInt();
+
+                if (conf.getSingleValue("SELECT b_id FROM blotter WHERE b_id = ?", b_id) != 0) {
+                    break;
+                } else {
+                    System.out.print("ID doesn't exist, Select Again: ");
+                }
+            } else {
+
+                System.out.print("Invalid Input, Enter Again: ");
+                sc.next();
+            }
         }
+
         
-        System.out.print("Number of Offense: ");
-        int r_offense = sc.nextInt();
-        while (r_offense <= 0) {
-        System.out.print("Must be positive. Enter again: ");
-        r_offense = sc.nextInt();
-    }
+        int r_offense;
+        while (true) {
+            System.out.print("Number of Offense: ");
+            if (sc.hasNextInt()) {
+                r_offense = sc.nextInt();
+                sc.nextLine();
+                if (r_offense >= 1) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Offense must be a positive integer.");
+                }
+            } else {
+                sc.nextLine();
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
+        }
         
         String r_status = "cleared";
         
@@ -111,20 +169,44 @@ public class Records {
         config conf = new config();
 
         System.out.print("Enter Record ID to update: ");
-        int id = sc.nextInt();
-        while(conf.getSingleValue("Select r_id FROM record WHERE r_id = ?",id)==0){
-            System.out.println("ID doesn't exist!");
-            System.out.print("Select ID Again: ");
-            id = sc.nextInt();
+        int r_id;
+        
+        while (true) {
+
+            if (sc.hasNextInt()) {
+                r_id = sc.nextInt();
+
+                if (conf.getSingleValue("SELECT r_id FROM record WHERE r_id = ?", r_id) != 0) {
+                    break;
+                } else {
+                    System.out.print("ID doesn't exist, Select Again: ");
+                }
+            } else {
+
+                System.out.print("Invalid Input, Enter Again: ");
+                sc.next();
+            }
+        }
+
+        
+        int r_offense;
+        while (true) {
+            System.out.print("Enter new number of offense: ");
+            if (sc.hasNextInt()) {
+                r_offense = sc.nextInt();
+                sc.nextLine();
+                if (r_offense >= 1) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Offense must be a positive integer.");
+                }
+            } else {
+                sc.nextLine();
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
         }
         
-        sc.nextLine(); 
-        System.out.print("Enter new Num of Offense: ");
-        int r_offense = sc.nextInt();
-        while (r_offense <= 0) {
-        System.out.print("Must be positive. Enter again: ");
-        r_offense = sc.nextInt();
-    }
+        
         String r_status = "cleared";
         
         LocalDate currdate = LocalDate.now();
@@ -133,7 +215,7 @@ public class Records {
         
         String query = "UPDATE record SET r_offense = ?, r_status = ?, r_datesettled = ? WHERE r_id = ?";
         
-        conf.updateRecord(query, r_offense,r_status, date,id);
+        conf.updateRecord(query, r_offense,r_status, date,r_id);
         
     }
 private void deleteRecord(){
@@ -142,16 +224,28 @@ private void deleteRecord(){
         config conf = new config();
 
         System.out.print("Enter Record ID to delete: ");
-        int id = sc.nextInt();
-        while(conf.getSingleValue("Select r_id FROM record WHERE r_id = ?",id)==0){
-            System.out.println("ID doesn't exist!");
-            System.out.print("Select ID Again: ");
-            id = sc.nextInt();
+        int rec_id;
+        
+        while (true) {
+
+            if (sc.hasNextInt()) {
+                rec_id = sc.nextInt();
+
+                if (conf.getSingleValue("SELECT r_id FROM record WHERE r_id = ?", rec_id) != 0) {
+                    break;
+                } else {
+                    System.out.print("ID doesn't exist, Select Again: ");
+                }
+            } else {
+
+                System.out.print("Invalid Input, Enter Again: ");
+                sc.next();
+            }
         }
         
         String query = "Delete FROM record WHERE r_id = ?";
        
-        conf.deleteRecord(query, id);
+        conf.deleteRecord(query, rec_id);
     }
 
     public void viewAllRecord() {
@@ -174,12 +268,23 @@ private void deleteRecord(){
         
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter Citizen ID to search: ");
-        int c_id = sc.nextInt();
+        int c_id;
         
-        String csql = "Select c_id FROM citizen WHERE c_id = ?";
-        while(conf.getSingleValue(csql, c_id)== 0){
-            System.out.print("Citizen doesn't exist, Select Again: ");
-            c_id = sc.nextInt();
+        while (true) {
+
+            if (sc.hasNextInt()) {
+                c_id = sc.nextInt();
+
+                if (conf.getSingleValue("SELECT c_id FROM citizen WHERE c_id = ?", c_id) != 0) {
+                    break;
+                } else {
+                    System.out.print("ID doesn't exist, Select Again: ");
+                }
+            } else {
+
+                System.out.print("Invalid Input, Enter Again: ");
+                sc.next();
+            }
         }
         
         String query = "SELECT citizen.c_id, citizen.c_lname, blotter.b_incident, blotter.b_reported, record.r_offense " +
@@ -208,11 +313,23 @@ private void deleteRecord(){
     config conf = new config();
     
     System.out.print("Enter Record ID to view: ");
-    int r_id = sc.nextInt();
-    while(conf.getSingleValue("Select r_id FROM record WHERE r_id = ?",r_id)==0){
-            System.out.println("ID doesn't exist!");
-            System.out.print("Select ID Again: ");
-            r_id = sc.nextInt();
+    int r_id;
+    
+    while (true) {
+
+            if (sc.hasNextInt()) {
+                r_id = sc.nextInt();
+
+                if (conf.getSingleValue("SELECT r_id FROM record WHERE r_id = ?", r_id) != 0) {
+                    break;
+                } else {
+                    System.out.print("ID doesn't exist, Select Again: ");
+                }
+            } else {
+
+                System.out.print("Invalid Input, Enter Again: ");
+                sc.next();
+            }
         }
 
     String query = "SELECT record.r_id, blotter.b_reported, blotter.b_fname, " +

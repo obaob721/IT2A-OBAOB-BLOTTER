@@ -1,4 +1,3 @@
-
 package testappv2a;
 
 import java.time.LocalDate;
@@ -6,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Blotter {
+    
     public void main(String[] args) {
        
         Blotter test= new Blotter();
@@ -20,8 +20,24 @@ public class Blotter {
         System.out.println("4. VIEW BLOTTER");
         System.out.println("5. EXIT");
 
-        System.out.print("Enter Action: ");
-        int action = sc.nextInt();
+        int action = 1;
+        
+        while (true) {
+                System.out.print("Enter Action: ");
+                
+                if (sc.hasNextInt()) {
+                    action = sc.nextInt();
+                    
+                    if (action >= 1 && action <= 5) {
+                        break;
+                    } else {
+                        System.out.println("Invalid Action. Enter number (1-5) only.");
+                    }
+                } else {
+                    System.out.println("Invalid Input. Must be an Integer.");
+                    sc.next();
+                }
+            }
         
         switch(action){
             case 1:
@@ -41,33 +57,62 @@ public class Blotter {
                 test.viewBlotter();
                 break;
            case 5:
-                
-               break;
+                return;
+
         }
-         System.out.print("Do you want to continue?: ");
-         resp = sc.next();
-         
-     }while(resp.equalsIgnoreCase("yes"));
-     
+        
+         System.out.print("Do you want to continue? (yes/no): ");
+            resp = sc.next();
+            
+            while (!resp.equalsIgnoreCase("yes") && !resp.equalsIgnoreCase("no")) {
+                System.out.print("Invalid Input, Enter Again: ");
+                resp = sc.next();
+            }
+            
+        }while(resp.equalsIgnoreCase("yes"));
+        
+        System.out.println("Thank you for using my system!");
+        System.exit(0);     
     }
+    
      public void addBlotter(){
             
         Scanner sc = new Scanner(System.in);
         config conf = new config();
         
-
-        System.out.print("Complainant's FullName: ");
-        String b_fname = sc.nextLine();
+        String b_fname;
+        while (true) {
+            System.out.print("Complainant's FullName: ");
+            b_fname = sc.nextLine();
+            if (b_fname.matches("[a-zA-Z\\s]+")){
+                break;
+            }
+            System.out.println("Invalid input. Please enter a valid name (letters only).");
+        }        
         
-        System.out.print("Incident Type: ");
-        String b_incident = sc.next();
+        String b_incident;
+        while (true) {
+            System.out.print("Incident Type: ");
+            b_incident = sc.nextLine();
+            if (b_incident.matches("[a-zA-Z\\s]+")){
+                break;
+            }
+            System.out.println("Invalid input. Please enter a valid incident type (letters only).");
+        }  
         
         LocalDate currdate = LocalDate.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         String date = currdate.format(format);
         
-        System.out.print("Location: ");
-        String b_location = sc.next();
+        String b_location;
+        while (true) {
+            System.out.print("Location: ");
+            b_location = sc.nextLine();
+            if (b_location.matches("[a-zA-Z\\s]+")){
+                break;
+            }
+            System.out.println("Invalid input. Please enter a valid location (letters only).");
+        }  
         
         String b_status = "ongoing"; 
      
@@ -92,31 +137,64 @@ public class Blotter {
         config conf = new config();
         
         System.out.print("Enter Blotter ID to update: ");
-        int id = sc.nextInt();
+        int b_id;
         
-        while(conf.getSingleValue("Select b_id FROM blotter WHERE b_id = ?",id)==0){
-            System.out.println("ID doesn't exist!");
-            System.out.print("Select Blotter ID Again: ");
-            id = sc.nextInt();
+        while (true) {
+
+            if (sc.hasNextInt()) {
+                b_id = sc.nextInt();
+
+                if (conf.getSingleValue("SELECT b_id FROM blotter WHERE b_id = ?", b_id) != 0) {
+                    break;
+                } else {
+                    System.out.print("ID doesn't exist, Select Again: ");
+                }
+            } else {
+
+                System.out.print("Invalid Input, Enter Again: ");
+                sc.next();
+            }
         }
+        
         sc.nextLine();
         
-        System.out.print("Enter new Complainant's FullName: ");
-        String b_fname = sc.nextLine();
-  
-        System.out.print("Enter new Incident Type: ");
-        String b_incident = sc.next();
+        String b_fname;
+        while (true) {
+            System.out.print("New Complainant's FullName: ");
+            b_fname = sc.nextLine();
+            if (b_fname.matches("[a-zA-Z\\s]+")){
+                break;
+            }
+            System.out.println("Invalid input. Please enter a valid name (letters only).");
+        }        
+        
+        String b_incident;
+        while (true) {
+            System.out.print("New Incident Type: ");
+            b_incident = sc.nextLine();
+            if (b_incident.matches("[a-zA-Z\\s]+")){
+                break;
+            }
+            System.out.println("Invalid input. Please enter a valid incident type (letters only).");
+        }  
         
         LocalDate currdate = LocalDate.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         String date = currdate.format(format);
-     
-        System.out.print("Enter new Location: ");
-        String b_location = sc.next();
+        
+        String b_location;
+        while (true) {
+            System.out.print("New Location: ");
+            b_location = sc.nextLine();
+            if (b_location.matches("[a-zA-Z\\s]+")){
+                break;
+            }
+            System.out.println("Invalid input. Please enter a valid location (letters only).");
+        } 
         
         String qry = "UPDATE blotter SET b_fname = ?, b_incident = ? , b_reported = ?, b_location = ?, b_status = 'ongoing' Where b_id = ?";
      
-        conf.updateRecord(qry, b_fname,b_incident,date,b_location, id);      
+        conf.updateRecord(qry, b_fname,b_incident,date,b_location, b_id);      
     }
 
    private void deleteBlotter(){
@@ -124,17 +202,28 @@ public class Blotter {
         config conf = new config();
          
         System.out.print("Enter Blotter ID to delete: ");
-        int id = sc.nextInt();
+        int b_id;
         
-         while(conf.getSingleValue("Select b_id FROM blotter WHERE b_id = ?",id)==0){
-            System.out.println("ID doesn't exist!");
-            System.out.print("Select Blotter ID Again: ");
-            id = sc.nextInt();
+        while (true) {
+
+            if (sc.hasNextInt()) {
+                b_id = sc.nextInt();
+
+                if (conf.getSingleValue("SELECT b_id FROM blotter WHERE b_id = ?", b_id) != 0) {
+                    break;
+                } else {
+                    System.out.print("ID doesn't exist, Select Again: ");
+                }
+            } else {
+
+                System.out.print("Invalid Input, Enter Again: ");
+                sc.next();
+            }
         }
         
         String qry = "Delete FROM blotter WHERE b_id = ?";
         
-        conf.deleteRecord(qry, id);    
+        conf.deleteRecord(qry, b_id);    
    }
   
 }
